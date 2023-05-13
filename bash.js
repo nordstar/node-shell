@@ -2,6 +2,9 @@
 
 const pwd = require('./pwd.js');
 
+const ls = require('./ls.js');
+const cat = require('./cat.js');
+const date = require('./date.js');
 
 
 process.stdout.write('prompt > ');
@@ -9,18 +12,37 @@ process.stdout.write('prompt > ');
 const path = require('path');
 //import { cwd } from 'node:process';
 // The stdin 'data' event fires after a user types in a line
-const promptName = () =>{
+
+const done = (output) => {
+  // show the output
+  process.stdout.write(output);
+  process.stdout.write("\nprompt > ");
+};
+
+//const promptName = () =>{
   process.stdin.on('data',  (data) =>{
-  let cmd =  data.toString().trim(); 
-  
-  pwd(cmd)
-  })
-}
-promptName();  
+  const entry =  data.toString().trim(); 
+  const [cmd, arg] = entry.split(" ");
 
- //console.log(`New directory: ${process.cwd()}`);
-// if(cmd==='pwd') process.stdout.write('You typed: ' + process.cwd(cmd));
+  switch (cmd){
+    case "ls":
+      ls(done);
+      break;
+    case "pwd":
+      pwd(done);
+      break;l
+    case "cat":
+      cat(done, arg);
+      break;
+    case "date":
+      date(done);
+      break;
 
-// else process.stdout.write('You typed this: ' + cmd);   
+  }
 
-// process.stdout.write('\nprompt > ');
+//process.stdout.write("\nprompt > ");
+  });
+
+//promptName();  
+
+
